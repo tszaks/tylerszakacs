@@ -200,6 +200,29 @@
       margin-right: 4px;
     }
 
+    /* ── Avatar header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 0.6em;
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .header-text h1 {
+      margin-top: 0;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
     /* ── Footer ── */
     .footer {
       color: var(--muted);
@@ -214,14 +237,23 @@
 <body>
 <div class="container">
 
-  <h1>Tyler Szakacs</h1>
-  <p class="meta">
-    <a href="https://github.com/tszaks" target="_blank">github.com/tszaks</a>
-    &nbsp;·&nbsp;
-    <a href="mailto:tyler@szakacsmedia.com">tyler@szakacsmedia.com</a>
-    &nbsp;·&nbsp;
-    <a href="https://szakacsmedia.com" target="_blank">szakacsmedia.com</a>
-  </p>
+  <div class="header">
+    <img
+      class="avatar"
+      src="https://avatars.githubusercontent.com/u/182370411?v=4"
+      alt="Tyler Szakacs"
+    />
+    <div class="header-text">
+      <h1>Tyler Szakacs</h1>
+      <p class="meta" style="margin-bottom:0">
+        <a href="https://github.com/tszaks" target="_blank">github.com/tszaks</a>
+        &nbsp;·&nbsp;
+        <a href="mailto:tyler@szakacsmedia.com">tyler@szakacsmedia.com</a>
+        &nbsp;·&nbsp;
+        <a href="https://szakacsmedia.com" target="_blank">szakacsmedia.com</a>
+      </p>
+    </div>
+  </div>
 
   <p>
     I build AI agent tooling, MCP servers, and developer infrastructure. Most of my day-to-day work is in private product repos. Publicly, the clearest slice is the tooling and infrastructure I've been building around agent workflows, local integrations, and developer systems.
