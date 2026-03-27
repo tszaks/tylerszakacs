@@ -143,6 +143,13 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (req.method === 'GET' && req.url === '/debug-env') {
+    const keys = Object.keys(process.env).filter(k => k.includes('API') || k.includes('RAILWAY'));
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ keys, hasAnthropicKey: !!process.env.ANTHROPIC_API_KEY, hasExaKey: !!process.env.EXA_API_KEY }));
+    return;
+  }
+
   if (req.method === 'POST' && req.url === '/chat') {
     let body = '';
     req.on('data', chunk => body += chunk);
