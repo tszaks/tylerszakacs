@@ -205,17 +205,21 @@
       width: 52px;
       height: 52px;
       border-radius: 50%;
-      background: var(--fg);
-      color: var(--bg);
+      background: none;
       border: none;
-      font-size: 22px;
+      padding: 0;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
       z-index: 100;
       transition: transform 0.15s ease;
+      overflow: hidden;
+    }
+    #chat-toggle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 50%;
     }
     #chat-toggle:hover { transform: scale(1.07); }
 
@@ -437,7 +441,9 @@ brew install &lt;tool-name&gt;</code></pre>
 </div>
 
 <!-- ── Chat Widget ── -->
-<button id="chat-toggle" aria-label="Chat with Tyler" title="Chat with Tyler">💬</button>
+<button id="chat-toggle" aria-label="Chat with Tyler" title="Chat with Tyler">
+  <img src="https://avatars.githubusercontent.com/u/182370411?v=4" alt="Tyler Szakacs" />
+</button>
 
 <div id="chat-panel" role="dialog" aria-label="Chat">
   <div id="chat-header">Chat with Tyler</div>

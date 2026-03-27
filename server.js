@@ -44,43 +44,92 @@ WHAT YOU NEVER DO:
 CONTEXT:
 People visiting your developer site are curious about your work or just want to say hi. Be casual, real, brief. If asked about Vero — proud but not braggy. If asked about MCP servers or CLI tools — answer briefly and technically correctly but in your voice. If asked personal stuff — be warm but not overly detailed.`;
 
-function callAnthropicAPI(messages) {
+const TOOLS = [
+  {
+    name: 'search_web',
+    description: 'Search the web for current information, news, or anything you don\'t know off the top of your head.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: 'The search query' }
+      },
+      required: ['query']
+    }
+  }
+];
+
+function httpsPost(hostname, path, headers, body) {
   return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 300,
-      system: SYSTEM_PROMPT,
-      messages
-    });
-
-    const options = {
-      hostname: 'api.anthropic.com',
-      path: '/v1/messages',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'Content-Length': Buffer.byteLength(body)
-      }
-    };
-
+    const options = { hostname, path, method: 'POST', headers: { ...headers, 'Content-Length': Buffer.byteLength(body) } };
     const req = https.request(options, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(e);
-        }
-      });
+      res.on('end', () => { try { resolve(JSON.parse(data)); } catch (e) { reject(e); } });
     });
-
     req.on('error', reject);
     req.write(body);
     req.end();
   });
+}
+
+function searchExa(query) {
+  const body = JSON.stringify({ query, num_results: 5, use_autoprompt: true, contents: { text: { max_characters: 1000 } } });
+  return httpsPost('api.exa.ai', '/search', {
+    'Content-Type': 'application/json',
+    'x-api-key': process.env.EXA_API_KEY
+  }, body);
+}
+
+async function callAnthropicAPI(messages) {
+  let currentMessages = [...messages];
+
+  // Tool use loop — keep going until Claude stops calling tools
+  for (let i = 0; i < 5; i++) {
+    const body = JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 500,
+      system: SYSTEM_PROMPT,
+      tools: TOOLS,
+      messages: currentMessages
+    });
+
+    const result = await httpsPost('api.anthropic.com', '/v1/messages', {
+      'Content-Type': 'application/json',
+      'x-api-key': process.env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01'
+    }, body);
+
+    if (result.stop_reason !== 'tool_use') {
+      return result;
+    }
+
+    // Execute each tool call
+    const toolResults = [];
+    for (const block of result.content) {
+      if (block.type !== 'tool_use') continue;
+      let output;
+      try {
+        if (block.name === 'search_web') {
+          const data = await searchExa(block.input.query);
+          const snippets = (data.results || []).map(r => `${r.title}\n${r.url}\n${r.text || ''}`).join('\n\n');
+          output = snippets || 'No results found.';
+        } else {
+          output = 'Unknown tool.';
+        }
+      } catch (e) {
+        output = `Search failed: ${e.message}`;
+      }
+      toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: output });
+    }
+
+    currentMessages = [
+      ...currentMessages,
+      { role: 'assistant', content: result.content },
+      { role: 'user', content: toolResults }
+    ];
+  }
+
+  throw new Error('Tool use loop exceeded');
 }
 
 const server = http.createServer(async (req, res) => {
