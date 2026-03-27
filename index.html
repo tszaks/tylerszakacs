@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tyler Szakacs</title>
+  <meta name="description" content="AI agent tooling, MCP servers, and developer infrastructure." />
   <style>
     :root {
       --bg: #ffffff;
@@ -12,8 +13,8 @@
       --border: #d0d7de;
       --link: #0969da;
       --code-bg: #f6f8fa;
-      --hr: #d0d7de;
-      --max-width: 760px;
+      --code-border: #d0d7de;
+      --max-width: 780px;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -24,23 +25,19 @@
         --border: #30363d;
         --link: #58a6ff;
         --code-bg: #161b22;
-        --hr: #30363d;
+        --code-border: #30363d;
       }
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: var(--bg);
       color: var(--fg);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 16px;
-      line-height: 1.6;
-      padding: 40px 24px 80px;
+      line-height: 1.65;
+      padding: 48px 24px 96px;
     }
 
     .container {
@@ -48,11 +45,11 @@
       margin: 0 auto;
     }
 
-    /* ── Typography ── */
+    /* ── Headings ── */
     h1, h2, h3 {
       font-weight: 600;
       line-height: 1.25;
-      margin-top: 1.5em;
+      margin-top: 1.75em;
       margin-bottom: 0.5em;
     }
 
@@ -60,6 +57,7 @@
       font-size: 2em;
       padding-bottom: 0.3em;
       border-bottom: 1px solid var(--border);
+      margin-top: 0;
     }
 
     h2 {
@@ -68,10 +66,9 @@
       border-bottom: 1px solid var(--border);
     }
 
-    h3 {
-      font-size: 1.1em;
-    }
+    h3 { font-size: 1.05em; margin-top: 1.25em; }
 
+    /* ── Body text ── */
     p {
       margin-bottom: 1em;
       color: var(--fg);
@@ -82,26 +79,26 @@
       text-decoration: none;
     }
 
-    a:hover {
-      text-decoration: underline;
-    }
+    a:hover { text-decoration: underline; }
 
+    /* ── Inline code ── */
     code {
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
       font-size: 0.875em;
       background: var(--code-bg);
-      border: 1px solid var(--border);
+      border: 1px solid var(--code-border);
       border-radius: 6px;
       padding: 2px 6px;
     }
 
+    /* ── Code blocks ── */
     pre {
       background: var(--code-bg);
-      border: 1px solid var(--border);
+      border: 1px solid var(--code-border);
       border-radius: 6px;
       padding: 16px;
       overflow-x: auto;
-      margin-bottom: 1em;
+      margin-bottom: 1.25em;
     }
 
     pre code {
@@ -113,28 +110,37 @@
 
     hr {
       border: none;
-      border-top: 1px solid var(--hr);
-      margin: 2em 0;
+      border-top: 1px solid var(--border);
+      margin: 2.5em 0;
     }
 
-    ul, ol {
-      padding-left: 2em;
+    /* ── Meta line ── */
+    .meta {
+      color: var(--muted);
+      font-size: 0.9em;
+      margin-top: 0.25em;
+      margin-bottom: 1.75em;
+    }
+
+    .meta a { color: var(--muted); }
+    .meta a:hover { color: var(--link); text-decoration: underline; }
+
+    /* ── Section label ── */
+    .section-note {
+      color: var(--muted);
+      font-size: 0.875em;
+      margin-top: -0.2em;
       margin-bottom: 1em;
     }
 
-    li {
-      margin-bottom: 0.25em;
-    }
-
-    /* ── Project cards ── */
+    /* ── Project list ── */
     .project-list {
       list-style: none;
       padding: 0;
-      margin-bottom: 1.5em;
-    }
-
-    .project-list li {
-      margin-bottom: 0;
+      margin-bottom: 1.25em;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
     }
 
     .project-list li + li {
@@ -144,192 +150,317 @@
     .project-item {
       display: flex;
       align-items: baseline;
-      gap: 12px;
-      padding: 10px 0;
+      gap: 10px;
+      padding: 10px 14px;
+      flex-wrap: wrap;
     }
 
     .project-name {
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-      font-size: 0.9em;
+      font-size: 0.875em;
       font-weight: 600;
       white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .project-sep {
+      color: var(--border);
+      flex-shrink: 0;
     }
 
     .project-desc {
       color: var(--muted);
-      font-size: 0.9em;
+      font-size: 0.875em;
+      flex: 1;
+      min-width: 0;
     }
 
-    /* ── Badges ── */
     .badge {
       display: inline-block;
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
       font-size: 0.7em;
-      padding: 1px 6px;
+      padding: 1px 7px;
       border-radius: 12px;
       border: 1px solid var(--border);
       color: var(--muted);
       white-space: nowrap;
+      flex-shrink: 0;
+      margin-left: auto;
     }
 
-    /* ── Header meta ── */
-    .meta {
+    /* ── Stack line ── */
+    .stack {
       color: var(--muted);
-      font-size: 0.9em;
-      margin-top: -0.25em;
+      font-size: 0.875em;
       margin-bottom: 1.5em;
     }
 
-    .meta a {
-      color: var(--muted);
+    .stack code {
+      font-size: 0.85em;
+      margin-right: 4px;
     }
 
-    .meta a:hover {
-      color: var(--link);
+    /* ── Footer ── */
+    .footer {
+      color: var(--muted);
+      font-size: 0.875em;
+      margin-top: 0;
     }
 
-    /* ── Section intro ── */
-    .section-intro {
-      color: var(--muted);
-      font-size: 0.9em;
-      margin-top: -0.25em;
-      margin-bottom: 1em;
-    }
+    .footer a { color: var(--muted); }
+    .footer a:hover { color: var(--link); text-decoration: underline; }
   </style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
 
-    <h1>Tyler Szakacs</h1>
-    <p class="meta">
-      Builder. CLI tools, MCP servers, iOS apps. &nbsp;·&nbsp;
-      <a href="https://github.com/tszaks" target="_blank">github.com/tszaks</a> &nbsp;·&nbsp;
-      <a href="https://szakacsmedia.com" target="_blank">szakacsmedia.com</a>
-    </p>
+  <h1>Tyler Szakacs</h1>
+  <p class="meta">
+    <a href="https://github.com/tszaks" target="_blank">github.com/tszaks</a>
+    &nbsp;·&nbsp;
+    <a href="mailto:tyler@szakacsmedia.com">tyler@szakacsmedia.com</a>
+    &nbsp;·&nbsp;
+    <a href="https://szakacsmedia.com" target="_blank">szakacsmedia.com</a>
+  </p>
 
-    <p>
-      I build tools that make development workflows faster — mostly CLI utilities, MCP servers for macOS integrations, and native iOS apps. Most of my public work is open source and available on GitHub.
-    </p>
+  <p>
+    I build AI agent tooling, MCP servers, and developer infrastructure. Most of my day-to-day work is in private product repos. Publicly, the clearest slice is the tooling and infrastructure I've been building around agent workflows, local integrations, and developer systems.
+  </p>
 
-    <hr />
+  <p>
+    I use coding agents heavily and care about where they fail, why they fail, and how to build cleaner interfaces around them.
+  </p>
 
-    <h2>MCP Servers</h2>
-    <p class="section-intro">Model Context Protocol servers for macOS and Apple ecosystem integrations.</p>
+  <hr />
 
-    <ul class="project-list">
-      <li>
-        <div class="project-item">
-          <a class="project-name" href="https://github.com/tszaks/multimodal-imessage-mcp" target="_blank">multimodal-imessage-mcp</a>
-          <span class="project-desc">iMessage access with conversation search and attachment handling</span>
-          <span class="badge">mcp</span>
-        </div>
-      </li>
-      <li>
-        <div class="project-item">
-          <a class="project-name" href="https://github.com/tszaks/icloud-calendar-mcp" target="_blank">icloud-calendar-mcp</a>
-          <span class="project-desc">iCloud Calendar event management with full CRUD via local macOS</span>
-          <span class="badge">mcp</span>
-        </div>
-      </li>
-      <li>
-        <div class="project-item">
-          <a class="project-name" href="https://github.com/tszaks/reminders-mcp" target="_blank">reminders-mcp</a>
-          <span class="project-desc">Apple Reminders integration — list and reminder management</span>
-          <span class="badge">mcp</span>
-        </div>
-      </li>
-      <li>
-        <div class="project-item">
-          <a class="project-name" href="https://github.com/tszaks/safari-mcp" target="_blank">safari-mcp</a>
-          <span class="project-desc">Full Safari browser control, page extraction, and WebDriver screenshots</span>
-          <span class="badge">mcp</span>
-        </div>
-      </li>
-      <li>
-        <div class="project-item">
-          <a class="project-name" href="https://github.com/tszaks/gmail-multi-inbox-mcp" target="_blank">gmail-multi-inbox-mcp</a>
-          <span class="project-desc">Multi-account Gmail access with built-in OAuth onboarding</span>
-          <span class="badge">mcp</span>
-        </div>
-      </li>
-      <li>
-        <div class="project-item">
-          <a class="project-name" href="https://github.com/tszaks/app-store-connect-mcp" target="_blank">app-store-connect-mcp</a>
-          <span class="project-desc">App Store Connect APIs and release automation</span>
-          <span class="badge">mcp</span>
-        </div>
-      </li>
-    </ul>
+  <h2>MCP Servers</h2>
+  <p class="section-note">Model Context Protocol servers for macOS and Apple ecosystem integrations.</p>
 
-    <h2>CLI Tools</h2>
-    <p class="section-intro">Command-line utilities for development workflows.</p>
+  <ul class="project-list">
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/multimodal-imessage-mcp" target="_blank">multimodal-imessage-mcp</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">iMessage access with conversation search and attachment handling</span>
+        <span class="badge">mcp</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/icloud-calendar-mcp" target="_blank">icloud-calendar-mcp</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">iCloud Calendar event management with full CRUD via local macOS</span>
+        <span class="badge">mcp</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/reminders-mcp" target="_blank">reminders-mcp</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Apple Reminders integration with full list and reminder management</span>
+        <span class="badge">mcp</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/apple-notes-mcp" target="_blank">apple-notes-mcp</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Comprehensive Apple Notes server for local macOS note management</span>
+        <span class="badge">mcp</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/safari-mcp" target="_blank">safari-mcp</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Full Safari browser control, page extraction, and WebDriver-backed screenshots</span>
+        <span class="badge">mcp</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/gmail-multi-inbox-mcp" target="_blank">gmail-multi-inbox-mcp</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Multi-account Gmail access with built-in OAuth onboarding</span>
+        <span class="badge">mcp</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/app-store-connect-mcp" target="_blank">app-store-connect-mcp</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">App Store Connect APIs and release automation</span>
+        <span class="badge">mcp</span>
+      </div>
+    </li>
+  </ul>
 
-    <ul class="project-list">
-      <li>
-        <div class="project-item">
-          <a class="project-name" href="https://github.com/tszaks/codex-memory" target="_blank">codex-memory</a>
-          <span class="project-desc">Codebase memory tool — risk analysis, co-change tracking, and decision context across git history</span>
-          <span class="badge">cli</span>
-        </div>
-      </li>
-      <li>
-        <div class="project-item">
-          <a class="project-name" href="https://github.com/tszaks/spotify-cli" target="_blank">spotify-cli</a>
-          <span class="project-desc">Control Spotify from the terminal via Spotify Web API and Spotify Connect</span>
-          <span class="badge">cli</span>
-        </div>
-      </li>
-      <li>
-        <div class="project-item">
-          <a class="project-name" href="https://github.com/tszaks/codex-sessions" target="_blank">codex-sessions</a>
-          <span class="project-desc">See which Codex agent sessions are currently live on your machine</span>
-          <span class="badge">cli</span>
-        </div>
-      </li>
-      <li>
-        <div class="project-item">
-          <a class="project-name" href="https://github.com/tszaks/homebrew-tap" target="_blank">homebrew-tap</a>
-          <span class="project-desc">Homebrew tap for installing CLI tools via <code>brew</code></span>
-          <span class="badge">brew</span>
-        </div>
-      </li>
-    </ul>
+  <h2>CLI Tools &amp; Infrastructure</h2>
+  <p class="section-note">Command-line utilities and developer workflow tooling.</p>
 
-    <h2>Apps</h2>
-    <p class="section-intro">Native mobile and web applications.</p>
+  <ul class="project-list">
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/codex-memory" target="_blank">codex-memory</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">CLI-first codebase memory for risk analysis, co-change tracking, and decision context across git history</span>
+        <span class="badge">cli</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/codex-sessions" target="_blank">codex-sessions</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">See which Codex agent sessions are currently live on your machine</span>
+        <span class="badge">cli</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/sourcekit-lsp-marketplace" target="_blank">sourcekit-lsp-marketplace</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Swift and Objective-C support for Claude Code via SourceKit-LSP</span>
+        <span class="badge">plugin</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/codex-discord-bridge" target="_blank">codex-discord-bridge</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Discord-to-Codex automation bridge with draft pull request workflows</span>
+        <span class="badge">cli</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/spotify-cli" target="_blank">spotify-cli</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Control Spotify from the terminal via Spotify Web API and Spotify Connect</span>
+        <span class="badge">cli</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/linkedin-indexer" target="_blank">linkedin-indexer</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Tooling to index and query LinkedIn-sourced datasets for automation workflows</span>
+        <span class="badge">cli</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <a class="project-name" href="https://github.com/tszaks/homebrew-tap" target="_blank">homebrew-tap</a>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Homebrew tap for installing CLI tools via <code>brew</code></span>
+        <span class="badge">brew</span>
+      </div>
+    </li>
+  </ul>
 
-    <ul class="project-list">
-      <li>
-        <div class="project-item">
-          <span class="project-name">Vero</span>
-          <span class="project-desc">Native iOS app built in Swift/SwiftUI — AI-powered health and wellness</span>
-          <span class="badge">ios</span>
-        </div>
-      </li>
-      <li>
-        <div class="project-item">
-          <span class="project-name">Preflight</span>
-          <span class="project-desc">Developer platform that hooks into your git workflow to capture AI agent sessions on every push</span>
-          <span class="badge">web</span>
-        </div>
-      </li>
-    </ul>
+  <h2>Apps &amp; Products</h2>
+  <p class="section-note">Native mobile and web applications — mostly private product repos.</p>
 
-    <hr />
+  <ul class="project-list">
+    <li>
+      <div class="project-item">
+        <span class="project-name">Vero</span>
+        <span class="project-sep">—</span>
+        <span class="project-desc">AI-powered financial assistant for iOS. Natural language queries over spending, budgets, and Plaid-connected accounts. Built in Swift/SwiftUI with Claude as the backend AI.</span>
+        <span class="badge">ios · swift</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <span class="project-name">Pallium</span>
+        <span class="project-sep">—</span>
+        <span class="project-desc">iOS notes app with AI-powered tagging and a local MCP server for agent read access</span>
+        <span class="badge">ios · swift</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <span class="project-name">Preflight</span>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Developer platform that hooks into your git workflow to capture AI agent sessions on every push, unifying code with its reasoning context</span>
+        <span class="badge">web</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <span class="project-name">Artrio</span>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Find Your Trio — social matching app</span>
+        <span class="badge">web</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <span class="project-name">Mole</span>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Deep clean and optimize your Mac</span>
+        <span class="badge">macos</span>
+      </div>
+    </li>
+  </ul>
 
-    <h2>Install</h2>
-    <p>Most CLI tools are available via Homebrew:</p>
-    <pre><code>brew tap tszaks/tap
+  <h2>Client Work</h2>
+  <p class="section-note">Web builds and platforms for clients — through <a href="https://szakacsmedia.com" target="_blank">Szakacs Media</a>.</p>
+
+  <ul class="project-list">
+    <li>
+      <div class="project-item">
+        <span class="project-name">Marpe Nutrition</span>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Full web platform with Astro parent site, Next.js + Supabase detox guide, and static parasite protocol app — all deployed on Railway</span>
+        <span class="badge">astro · next.js</span>
+      </div>
+    </li>
+    <li>
+      <div class="project-item">
+        <span class="project-name">GNA Works</span>
+        <span class="project-sep">—</span>
+        <span class="project-desc">Self-hosted Railway rebuild of the GNA Works site</span>
+        <span class="badge">astro</span>
+      </div>
+    </li>
+  </ul>
+
+  <hr />
+
+  <h2>Stack</h2>
+
+  <p class="stack">
+    <code>TypeScript</code>
+    <code>JavaScript</code>
+    <code>Swift</code>
+    <code>SwiftUI</code>
+    <code>Python</code>
+    <code>Go</code>
+    <code>SQL</code>
+    <code>Next.js</code>
+    <code>Astro</code>
+    <code>Railway</code>
+    <code>Supabase</code>
+    <code>Xcode</code>
+  </p>
+
+  <h2>Install</h2>
+
+  <p>Most CLI tools are available via Homebrew:</p>
+  <pre><code>brew tap tszaks/tap
 brew install &lt;tool-name&gt;</code></pre>
 
-    <p>MCP servers can be added directly to Claude Code or any MCP-compatible client via <code>npx</code> or local install.</p>
+  <p>MCP servers can be added to Claude Code or any MCP-compatible client via <code>npx</code> or local install. See each repo for setup instructions.</p>
 
-    <hr />
+  <hr />
 
-    <p class="meta">
-      Tyler Szakacs &nbsp;·&nbsp; <a href="mailto:tyler@szakacsmedia.com">tyler@szakacsmedia.com</a> &nbsp;·&nbsp; <a href="https://szakacsmedia.com" target="_blank">Szakacs Media</a>
-    </p>
+  <p class="footer">
+    Tyler Szakacs &nbsp;·&nbsp;
+    <a href="mailto:tyler@szakacsmedia.com">tyler@szakacsmedia.com</a> &nbsp;·&nbsp;
+    <a href="https://github.com/tszaks" target="_blank">GitHub</a> &nbsp;·&nbsp;
+    <a href="https://szakacsmedia.com" target="_blank">Szakacs Media</a>
+  </p>
 
-  </div>
+</div>
 </body>
 </html>
