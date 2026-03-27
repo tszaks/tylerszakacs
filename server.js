@@ -143,18 +143,6 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (req.method === 'GET' && req.url === '/debug-env') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      hasAnthropicKey: !!process.env.ANTHROPIC_API_KEY,
-      hasExaKey: !!process.env.EXA_API_KEY,
-      envId: process.env.RAILWAY_ENVIRONMENT_ID,
-      serviceId: process.env.RAILWAY_SERVICE_ID,
-      projectId: process.env.RAILWAY_PROJECT_ID
-    }));
-    return;
-  }
-
   if (req.method === 'POST' && req.url === '/chat') {
     let body = '';
     req.on('data', chunk => body += chunk);
